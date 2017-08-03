@@ -19,9 +19,20 @@ hasProgram() {
 case $1 in
     'install')
         echo 'Running Install'
+
+        # Pull personal vimrc
+        git clone https://github.com/AubreySLavigne/vim-config ~/.vim
+        cd ~/.vim
+        git submodule update --init
+
+        # Local Configurations
+        touch ~/.vimrc
+        echo 'so ~/.vim/vimrc' > ~/.vimrc
+
         ;;
     'check')
         echo 'Running Check'
+        hasProgram ctags
         hasProgram git
         hasProgram php
         hasProgram python
