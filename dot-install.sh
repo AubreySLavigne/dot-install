@@ -1,21 +1,31 @@
 #!/bin/bash
 
 hasProgram() {
-    NAME=$1
-    WHICH=`which $NAME`
-    PAD_LENGTH=7
 
+    # EXISTS = $1
+    WHICH=$2
+
+    eval $1="0"
     if [ -n "$WHICH" ]; then
-        EXISTS=True
-    else
-        EXISTS=False
+        eval $1="1"
     fi
+}
+
+echoHasProgram() {
+    local NAME=$1
+    local WHICH=`which $NAME`
+    local PAD_LENGTH=7
+
+    # EXISTS = hasProgram WHICH
+    hasProgram EXISTS $WHICH
 
     printf '%s' $NAME 
     for ((i = 0; i < ($((PAD_LENGTH - ${#NAME})) ); i++)){ printf "%s" ' '; }
     printf ': %s\n' $EXISTS
 }
 
+
+# Run the Requested Command
 case $1 in
     'install')
         echo 'Running Install'
@@ -32,11 +42,11 @@ case $1 in
         ;;
     'check')
         echo 'Running Check'
-        hasProgram ctags
-        hasProgram git
-        hasProgram php
-        hasProgram python
-        hasProgram vim
+        echoHasProgram ctags
+        echoHasProgram git
+        echoHasProgram php
+        echoHasProgram python
+        echoHasProgram vim
         ;;
     *)
         echo 'Usage:'
